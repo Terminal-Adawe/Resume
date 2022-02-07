@@ -136,7 +136,7 @@ class savedetailsController extends Controller
         if($hiddencheck=='10'){
             return redirect('/viewtemplates');
         }
-        
+
     	return redirect('/education');
     }
 
@@ -245,6 +245,7 @@ class savedetailsController extends Controller
 
     	$skill = $request->skill;
     	$hiddencheck = $request->hiddencheck;
+        $resume_id = 0;
 
     	// echo $sessionkey." and checker is ".$checker;
 
@@ -290,6 +291,7 @@ class savedetailsController extends Controller
 
     	$hobby = $request->hobby;
     	$hiddencheck = $request->hiddencheck;
+        $resume_id = 0;
 
 
     	// echo $sessionkey." and checker is ".$checker;
@@ -331,6 +333,7 @@ class savedetailsController extends Controller
 
     public function savesummary(Request $request){
         $sessionkey = $request->session()->get('_token', 'default');
+        $resume_id = 0;
 
         if(Auth::check()){
             $sessionkey = Auth::user()->id;
