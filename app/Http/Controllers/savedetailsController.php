@@ -72,6 +72,7 @@ class savedetailsController extends Controller
     	$todate = $request->todate;
     	$projects = $request->projects;
     	$hiddencheck = $request->hiddencheck;
+        $resume_id = 0;
 
         $is_current = $request->current;
 
