@@ -12,7 +12,7 @@
 </head>
 <body style="width: 100%; position: relative; margin:0; padding: 0;">
 
-  <div class="container" style="font-size: 20px; font-family: 'Times New Roman'">
+  <div class="container my-4" style="font-size: 20px; font-family: 'Times New Roman'">
     <div class="card print my-4" style="padding-left: 40px; padding-right: 40px; padding-top: 40px; padding-bottom: 40px; ">
   <!-- Heading -->
     @if($data['personaldetails'])
@@ -169,14 +169,13 @@
     </div>
     </div>
 
-    <div class="row_">
+    <div class="row_ mb-4">
       <form action="/print-sheet" method="POST" class="mx-auto">
         @csrf
         <button class="btn btn-danger" type="submit">Print</button>
       </form>
     </div>
   </div>
-
   <script src="{{ asset('bootstrap-4.3.1-dist/js/bootstrap.min.js') }}"></script>
 </body>
 </html>

@@ -11,11 +11,11 @@
 <script src="{{ public_path('bootstrap-4.3.1-dist/js/bootstrap.bundle.min.js') }}"></script>
 </head>
   <body>
-    <div class="card print my-4" style="padding-left: 40px; padding-right: 40px; padding-top: 40px; padding-bottom: 40px; ">
+    <div class="container" style="font-size: 14px; font-family: 'Times New Roman'">
     @if($data["personaldetails"])
     <div class="row_ my-4">
       <div class="column75">
-        <h1 style="font-size: 64px">{{ $data["personaldetails"]->surname }} {{ $data["personaldetails"]->other_names }}</h1>
+        <h1 style="font-size: 50px">{{ $data["personaldetails"]->surname }} {{ $data["personaldetails"]->other_names }}</h1>
       </div>
       <div class="column25">
           <p>

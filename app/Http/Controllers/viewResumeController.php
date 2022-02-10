@@ -335,7 +335,8 @@ class viewResumeController extends Controller
         $data['page'] = "viewresume";
 
         $pdf = PDF::loadView('template1.testTemplate', ['data' => $data]);
-        return $pdf->download('resume.pdf');
+
+        return $pdf->setPaper('A4')->download('resume.pdf');
     }
 
 }
