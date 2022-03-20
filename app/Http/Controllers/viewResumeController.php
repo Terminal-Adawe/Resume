@@ -43,7 +43,7 @@ class viewResumeController extends Controller
         }
 
     	$hiddencheck = $request->hiddencheck;
-        $template = 1;
+        $templateid = $request->templateid;
 
     	$data['personaldetails'] = Personal_detail::where('session_id',$sessionkey)
     		->first();
@@ -80,17 +80,17 @@ class viewResumeController extends Controller
 
         if (UserTemplateProperty::where($where)->doesntExist()) {
             // ...
-            $data['templateproperties'] = TemplateProperty::where('template_id',$template)->first();
+            $data['templateproperties'] = TemplateProperty::where('template_id',$templateid)->first();
             $colors = explode(",",$data['templateproperties']->available_colors);
             $fonts = explode(",",$data['templateproperties']->available_fonts);
 
-            $userProperties=['session_id'=>$sessionkey,'resume_id'=>$resume_id,'template'=>$template,'color1'=>trim($colors[0]),'color2'=>'black','font'=>trim($fonts[0])];
+            $userProperties=['session_id'=>$sessionkey,'resume_id'=>$resume_id,'template'=>$templateid,'color1'=>trim($colors[0]),'color2'=>'black','font'=>trim($fonts[0])];
 
             DB::table('user_template_properties')->insert($userProperties);
             }
 
 
-        $data['templateproperties'] = TemplateProperty::where('template_id',$template)->first();
+        $data['templateproperties'] = TemplateProperty::where('template_id',$templateid)->first();
 
         $data['properties'] = UserTemplateProperty::where($where)->first();
 
@@ -100,61 +100,7 @@ class viewResumeController extends Controller
 
         $data['page'] = "viewresume";
 
-    	return view('template1')->with('data',$data);
-    }
-
-    public function previewresume(Request $request){
-        $sessionkey = $request->session()->get('_token', 'default');
-        $hiddencheck = $request->hiddencheck;
-
-        $where = [['session_id',$sessionkey]];
-
-        if(Auth::check()){
-            $sessionkey = Auth::user()->id;
-            $where = [['session_id',$sessionkey],['resume_id',Auth::user()->active_resume]];
-        }
-
-
-        $data['personaldetails'] = Personal_detail::where('session_id',$sessionkey)
-            ->first();
-
-        $data['education'] = Education::join('certifications','certifications.id','=','education.certification_id')->where($where)
-            ->select('*','education.id as eid')
-            ->get();
-
-        $data['education_projects'] = Education::leftJoin('educational_projects','education.id','educational_projects.education_id')
-            ->join('certifications','certifications.id','=','education.certification_id')
-            ->where($where)
-            ->select('*','education.id as eid')
-            ->get();
-
-        $data['professionalexperience'] = Professional_experience::where($where)
-            ->get();
-
-        $data['professionalexperience_responsibilities'] = Professional_experience::leftJoin('work_duties','professional_experiences.id','work_duties.professional_experience_id')
-            ->where($where)
-            ->get();
-
-        $data['professionalexperience_projects'] = Professional_experience::leftJoin('work_projects','professional_experiences.id','work_projects.professional_experience_id')
-            ->where($where)
-            ->get();
-
-        $data['skills'] = Skill::where($where)
-            ->get();
-
-        $data['hobbies'] = Hobby::where($where)
-            ->get();
-
-        $data['summary'] = Summary::where($where)
-            ->first();
-
-        $data['progress'] = ProgressBar::where('session_id',$sessionkey)->first();
-
-        $data['progressPages'] = ProgressPages::orderBy('created_at', 'ASC')->get();
-
-        $data['page'] = "viewresume";
-
-        return view('template1.template1preview')->with('data',$data);
+    	return view('templates.'.$data['templateproperties']->template_name)->with('data',$data);
     }
 
 
@@ -167,6 +113,8 @@ class viewResumeController extends Controller
 
       $sessionkey = $request->session()->get('_token', 'default');
         $hiddencheck = $request->hiddencheck;
+
+        $template = $request->template;
 
         $where = [['session_id',$sessionkey]];
 
@@ -219,7 +167,7 @@ class viewResumeController extends Controller
         $pdf = new PDF();
     
         view()->share('data',$data);
-        $pdf = PDF::setPaper('A4', 'landscape')->loadView('template1.print.template1', $data);
+        $pdf = PDF::loadView('templates.print.'.$template, $data);
     
     
         // PDF::setBasePath(realpath($_SERVER['DOCUMENT_ROOT']));
@@ -228,8 +176,9 @@ class viewResumeController extends Controller
           return $pdf->download($file);
     }
 
-    public function previewresume2(Request $request){
+    public function previewresume(Request $request){
         $sessionkey = $request->session()->get('_token', 'default');
+        $template = $request->template;
 
         $where = [['session_id',$sessionkey]];
 
@@ -279,7 +228,7 @@ class viewResumeController extends Controller
 
         $data['page'] = "viewresume";
 
-        return view('template1.template1preview')->with('data',$data);
+        return view('templates.preview.'.$template.'preview')->with('data',$data);
     }
 
 
@@ -334,9 +283,9 @@ class viewResumeController extends Controller
 
         $data['page'] = "viewresume";
 
-        $pdf = PDF::loadView('template1.testTemplate', ['data' => $data]);
+        $pdf = PDF::loadView('template1.print.template1', ['data' => $data]);
 
-        return $pdf->setPaper('A4')->download('resume.pdf');
+        return $pdf->download('resume.pdf');
     }
 
 }

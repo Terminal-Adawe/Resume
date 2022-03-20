@@ -36,93 +36,16 @@
     <div class="row_ my-4">
       <div class="column75">
         @if($data["summary"])
-        <div class="row_">
-          <div class="col">
+          <div class="row_">
             <h5 style="color: #5480f9">SUMMARY</h5>
             <p>
               {!! nl2br(e($data["summary"]->summary)) !!}
             </p>
           </div>
-        </div>
-        @endif
-        @if($data["professionalexperience"])
-        <div class="row_ my-4">
-          <div class="col">
-            <h5 style="color: #5480f9">EXPERIENCE</h5>
-            @foreach($data["professionalexperience"] as $experience)
-            <div class="row_">
-              <div class="col-12">
-                <b>{{ $experience->company }}, </b>{{ $experience->address }}, {{ $experience->city }} - {{ $experience->role }}
-                <br>
-                <small>{{ $experience->date_started }} to {!! $experience->is_current==0 ? $experience->date_ended : "date" !!}</small>
-              </div>
-              @if($data["professionalexperience_responsibilities"])
-              <div class="col-12 mt-3">
-                <div class="ml-4">
-                  <ul>
-                    @foreach($data["professionalexperience_responsibilities"] as $responsibility)
-                      @if($responsibility->professional_experience_id == $experience->id )
-                        <li>{!! nl2br(e($responsibility->duty)) !!}</li>
-                      @endif
-                    @endforeach
-                  </ul>
-                </div>
-              </div>
-              @endif
-              @if($data["professionalexperience_projects"])
-              <div class="col-12 mt-3">
-                <div class="ml-4">
-                  <ul>
-                    @foreach($data["professionalexperience_projects"] as $project)
-                      @if($project->professional_experience_id == $experience->id )
-                        <li>{!! nl2br(e($project->project)) !!}</li>
-                      @endif
-                    @endforeach
-                  </ul>
-                </div>
-              </div>
-              @endif
-            </div>
-          <br>
-          @endforeach
-          </div>
-        </div>
-        @endif
-        @if($data["education"])
-        <div class="row_ my-4">
-          <div class="col">
-            <h5 style="color: #5480f9">EDUCATION</h5>
-            @foreach($data["education"] as $education)
-          <div class="row_">
-            <div class="col-12">
-              <b>{{ $education->school }}, </b>{{ $education->address }}, {{ $education->country }}
-              <br>
-              <small>{{ $education->date_started }} to {!! $education->is_current==0 ? $education->date_ended : "date" !!}</small>
-            </div>
-            @if($data["education_projects"])
-            <div class="col-12 mt-3">
-              <div class="ml-4"> 
-                <ul>
-                  @foreach($data["education_projects"] as $project)
-                      @if($project->education_id == $education->eid )
-                        <li>{!! nl2br(e($project->project)) !!}</li>
-                      @endif
-                  @endforeach
-                </ul>
-              </div>
-            </div>
-            @endif
-          </div>
-          <br>
-          @endforeach
-          </div>
-        </div>
         @endif
       </div>
       <div class="column25">
-        <div class="row_">
           @if($data["skills"])
-          <div class="col-12">
             <h5 style="color: #5480f9">SKILLS</h5>
             <ul>
               @foreach($data["skills"] as $skill)
@@ -131,11 +54,9 @@
                 </li> 
               @endforeach
             </ul>
-          </div>
           @endif
 
           @if($data["hobbies"])
-          <div class="col-12 my-4">
             <h5 style="color: #5480f9">HOBBIES</h5>
             <ul>
               @foreach($data["hobbies"] as $hobby)
@@ -144,9 +65,62 @@
                 </li>
               @endforeach
             </ul>
-          </div>
           @endif
-        </div>
+      </div>
+    </div>
+    <div class="row_ my-4">
+      <div class="column75">
+        @if($data["professionalexperience"])
+          <div class="row_">
+            <h5 style="color: #5480f9">EXPERIENCE</h5>
+            @foreach($data["professionalexperience"] as $experience)
+              <b>{{ $experience->company }}, </b>{{ $experience->address }}, {{ $experience->city }} - {{ $experience->role }}
+                <br>
+              <small>{{ $experience->date_started }} to {!! $experience->is_current==0 ? $experience->date_ended : "date" !!}</small>
+              @if($data["professionalexperience_responsibilities"])
+                <ul>
+                  @foreach($data["professionalexperience_responsibilities"] as $responsibility)
+                    @if($responsibility->professional_experience_id == $experience->id )
+                      <li>{!! nl2br(e($responsibility->duty)) !!}</li>
+                    @endif
+                  @endforeach
+                </ul>
+              @endif
+              @if($data["professionalexperience_projects"])
+                <ul>
+                  @foreach($data["professionalexperience_projects"] as $project)
+                    @if($project->professional_experience_id == $experience->id )
+                      <li>{!! nl2br(e($project->project)) !!}</li>
+                    @endif
+                  @endforeach
+                </ul>
+              @endif
+            @endforeach
+          </div>
+        @endif
+
+        @if($data["education"])
+          <div class="row_ my-4">
+            <h5 style="color: #5480f9">EDUCATION</h5>
+            @foreach($data["education"] as $education)
+              <b>{{ $education->school }}, </b>{{ $education->address }}, {{ $education->country }}
+              <br>
+              <small>{{ $education->date_started }} to {!! $education->is_current==0 ? $education->date_ended : "date" !!}</small>
+              @if($data["education_projects"])
+                <ul>
+                  @foreach($data["education_projects"] as $project)
+                      @if($project->education_id == $education->eid )
+                        <li>{!! nl2br(e($project->project)) !!}</li>
+                      @endif
+                  @endforeach
+                </ul>
+              @endif
+            @endforeach
+          </div>
+        @endif
+      </div>
+      <div class="column25">
+          
       </div>
     </div>
     </div>

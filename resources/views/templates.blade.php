@@ -6,6 +6,7 @@
         <form method="get" action="/viewresume">
           {{ csrf_field() }}
           <input type="hidden" value="1" name="templateid"/>
+          <input type="hidden" name="template" value="template1">
           <div class="card" style="width:400px">
             <img src="https://img.icons8.com/nolan/96/template.png"/>
             <div class="card-body">
