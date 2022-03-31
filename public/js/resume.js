@@ -77,4 +77,23 @@ $('.no').off('click').on('click',function(e){
     // Auto Expand text area
     autosize($('textarea'));
 
+
+    $('.template_color_select').on('click',function(){
+        console.log("color clicked");
+        console.log($(this).attr('value'));
+        $('.selected_template_color').css({
+            'background-color': $(this).attr('value')
+        });
+
+        $('.theme-color').css({
+            'color':$(this).attr('value')
+        });
+
+        $('.theme-color-border').css({
+            'border-color':$(this).attr('value')
+        });
+
+        $('.theme-color-form').val($(this).attr('value'));
+    })
+
 });

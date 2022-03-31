@@ -1,15 +1,4 @@
-<html><head>
-<title>Orange Template</title>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="description" content="Resume site">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" type="text/css" href="{{ public_path('bootstrap-4.3.1-dist/css/bootstrap.min.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ public_path('css/resume.css') }}">
-<script src="{{ public_path('js/jquery-3.2.1.js') }}"></script>
-<script src="https://kit.fontawesome.com/967d61a618.js" crossorigin="anonymous"></script>
-<script src="{{ public_path('bootstrap-4.3.1-dist/js/bootstrap.bundle.min.js') }}"></script>
-</head>
+@include('templates.print.printHead')
   <body>
     <div class="container" style="font-size: 14px; font-family: 'Times New Roman'">
     @if($data["personaldetails"])
@@ -37,7 +26,7 @@
       <div class="column75">
         @if($data["summary"])
           <div class="row_">
-            <h5 style="color: #5480f9">SUMMARY</h5>
+            <h5 style="color: {{ $data['properties']->color1 }}">SUMMARY</h5>
             <p>
               {!! nl2br(e($data["summary"]->summary)) !!}
             </p>
@@ -46,7 +35,7 @@
       </div>
       <div class="column25">
           @if($data["skills"])
-            <h5 style="color: #5480f9">SKILLS</h5>
+            <h5 style="color: {{ $data['properties']->color1 }}">SKILLS</h5>
             <ul>
               @foreach($data["skills"] as $skill)
                 <li>
@@ -57,7 +46,7 @@
           @endif
 
           @if($data["hobbies"])
-            <h5 style="color: #5480f9">HOBBIES</h5>
+            <h5 style="color: {{ $data['properties']->color1 }}">HOBBIES</h5>
             <ul>
               @foreach($data["hobbies"] as $hobby)
                 <li> 
@@ -72,7 +61,7 @@
       <div class="column75">
         @if($data["professionalexperience"])
           <div class="row_">
-            <h5 style="color: #5480f9">EXPERIENCE</h5>
+            <h5 style="color: {{ $data['properties']->color1 }}">EXPERIENCE</h5>
             @foreach($data["professionalexperience"] as $experience)
               <b>{{ $experience->company }}, </b>{{ $experience->address }}, {{ $experience->city }} - {{ $experience->role }}
                 <br>
@@ -101,7 +90,7 @@
 
         @if($data["education"])
           <div class="row_ my-4">
-            <h5 style="color: #5480f9">EDUCATION</h5>
+            <h5 style="color: {{ $data['properties']->color1 }}">EDUCATION</h5>
             @foreach($data["education"] as $education)
               <b>{{ $education->school }}, </b>{{ $education->address }}, {{ $education->country }}
               <br>

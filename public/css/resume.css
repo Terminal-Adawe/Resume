@@ -461,6 +461,10 @@ label{
   }
 }
 
+.template_color::after {
+    content: none;
+}
+
 
 .row_{
   width: 100%;
@@ -483,6 +487,14 @@ label{
 .column75{
   float: left;
   width: 75%;
+  overflow: hidden;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.column100{
+  float: left;
+  width: 100%;
   overflow: hidden;
   padding-left: 20px;
   padding-right: 20px;

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 
 use Illuminate\Support\Facades\Auth;
@@ -25,8 +26,9 @@ class viewResumeController extends Controller
     //
     public function viewtemplates(){
     	
+        $data['templates'] = TemplateProperty::where('active','1')->get();
 
-    	return view('templates');
+    	return view('templates')->with('data',$data);
     }
 
     public function viewresume(Request $request){
@@ -78,7 +80,7 @@ class viewResumeController extends Controller
     	$data['summary'] = Summary::where($where)
     		->first();
 
-        if (UserTemplateProperty::where($where)->doesntExist()) {
+        if (UserTemplateProperty::where([['session_id',$sessionkey],['resume_id',$resume_id],['template',$templateid]])->doesntExist()) {
             // ...
             $data['templateproperties'] = TemplateProperty::where('template_id',$templateid)->first();
             $colors = explode(",",$data['templateproperties']->available_colors);
@@ -92,7 +94,10 @@ class viewResumeController extends Controller
 
         $data['templateproperties'] = TemplateProperty::where('template_id',$templateid)->first();
 
-        $data['properties'] = UserTemplateProperty::where($where)->first();
+        Log::debug("template ID is ".$templateid);
+        Log::debug($data['templateproperties']);
+
+        $data['properties'] = UserTemplateProperty::where([['session_id',$sessionkey],['resume_id',$resume_id],['template',$templateid]])->first();
 
         $data['progress'] = ProgressBar::where('session_id',$sessionkey)->first();
 
@@ -111,6 +116,8 @@ class viewResumeController extends Controller
       $filep = public_path()."/storage/resumes/".$file;
       // $objDateTime->format('Ymdis');
 
+      $resume_id = Auth::user()->active_resume;
+
       $sessionkey = $request->session()->get('_token', 'default');
         $hiddencheck = $request->hiddencheck;
 
@@ -118,9 +125,13 @@ class viewResumeController extends Controller
 
         $where = [['session_id',$sessionkey]];
 
+        $resume_id = 0;
+
         if(Auth::check()){
             $sessionkey = Auth::user()->id;
-            $where = [['session_id',$sessionkey],['resume_id',Auth::user()->active_resume]];
+            $resume_id = Auth::user()->active_resume;
+
+            $where = [['session_id',$sessionkey],['resume_id',$resume_id]];
         }
 
 
@@ -161,13 +172,17 @@ class viewResumeController extends Controller
 
         $data['progressPages'] = ProgressPages::orderBy('created_at', 'ASC')->get();
 
+        $data['properties'] = UserTemplateProperty::where([['session_id',$sessionkey],['resume_id',$resume_id],['template',$template]])->first();
+
+        $data['template'] = TemplateProperty::where('template_id',$template)->first();
+
         $data['page'] = "viewresume";
 
         // share data to view
         $pdf = new PDF();
     
         view()->share('data',$data);
-        $pdf = PDF::loadView('templates.print.'.$template, $data);
+        $pdf = PDF::loadView('templates.print.'.$data['template']->template_name, $data);
     
     
         // PDF::setBasePath(realpath($_SERVER['DOCUMENT_ROOT']));
@@ -180,14 +195,31 @@ class viewResumeController extends Controller
         $sessionkey = $request->session()->get('_token', 'default');
         $template = $request->template;
 
+        $templateid = $request->templateid;
+
+        $themeColor = $request->themeColor;
+        $themeFont;
+
+        $resume_id = 0;
+
+
         $where = [['session_id',$sessionkey]];
 
         if(Auth::check()){
+            $resume_id = Auth::user()->active_resume;
+
             $sessionkey = Auth::user()->id;
-            $where = [['session_id',$sessionkey],['resume_id',Auth::user()->active_resume]];
+            $where = [['session_id',$sessionkey],['resume_id',$resume_id]];
         }
 
         $hiddencheck = $request->hiddencheck;
+
+
+        // Update personal properties
+        $user_prop=['color1'=>$themeColor];
+
+        UserTemplateProperty::where('session_id',$sessionkey)->update($user_prop);
+
 
         $data['personaldetails'] = Personal_detail::where('session_id',$sessionkey)
             ->first();
@@ -222,13 +254,15 @@ class viewResumeController extends Controller
         $data['summary'] = Summary::where($where)
             ->first();
 
+        $data['properties'] = UserTemplateProperty::where([['session_id',$sessionkey],['resume_id',$resume_id],['template',$templateid]])->first();
+
         $data['progress'] = ProgressBar::where('session_id',$sessionkey)->first();
 
         $data['progressPages'] = ProgressPages::orderBy('created_at', 'ASC')->get();
 
         $data['page'] = "viewresume";
 
-        return view('templates.preview.'.$template.'preview')->with('data',$data);
+        return view('templates.preview.'.$template.'Preview')->with('data',$data);
     }
 
 
@@ -278,6 +312,8 @@ class viewResumeController extends Controller
             ->first();
 
         $data['progress'] = ProgressBar::where('session_id',$sessionkey)->first();
+
+        $data['properties'] = UserTemplateProperty::where([['session_id',$sessionkey],['resume_id',$resume_id],['template',$templateid]])->first();
 
         $data['progressPages'] = ProgressPages::orderBy('created_at', 'ASC')->get();
 
