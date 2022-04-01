@@ -218,7 +218,7 @@ class viewResumeController extends Controller
         // Update personal properties
         $user_prop=['color1'=>$themeColor];
 
-        UserTemplateProperty::where('session_id',$sessionkey)->update($user_prop);
+        UserTemplateProperty::where([['session_id',$sessionkey],['resume_id',$resume_id],['template',$templateid]])->update($user_prop);
 
 
         $data['personaldetails'] = Personal_detail::where('session_id',$sessionkey)
