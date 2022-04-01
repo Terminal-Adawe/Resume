@@ -135,8 +135,8 @@
         @if($data['hobbies'])
         <div class="row_ my-4">
           <hr style="border: 1px solid {{ $data['properties']->color1 }};">
-            <div class="row_ my-4">
-              <h5 class="theme-color text-center my-4" style="color: {{ $data['properties']->color1 }}">HOBBIES</h5>
+            <div class="row_">
+              <h3 class="theme-color text-center my-4" style="color: {{ $data['properties']->color1 }}">HOBBIES</h3>
               <ul>
                 @foreach($data['hobbies'] as $hobby)
                   <li> 

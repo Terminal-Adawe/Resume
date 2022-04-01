@@ -4,6 +4,7 @@
 <body style="width: 100%; position: relative; margin:0; padding: 0;">
 
   <div class="container my-4" style="font-size: 20px; font-family: 'Times New Roman'">
+    @include('templates.goBack')
     <div class="card print my-4" style="padding-left: 40px; padding-right: 40px; padding-top: 40px; padding-bottom: 40px; ">
 
     <!-- Heading -->
@@ -39,7 +40,7 @@
       <div class="column100">
         <!-- Summary -->
         @if($data['summary'])
-        <div class="row">
+        <div class="row_">
           <!-- <div class="col"> -->
             <h3 class="theme-color text-center my-4" style="color: {{ $data['properties']->color1 }}">SUMMARY</h3>
             <p>
@@ -81,7 +82,7 @@
               </div>
 
               @if($data['professionalexperience_responsibilities'])
-              <div class="column100 mt-3">
+              <div class="row_ mt-3">
                 <div class="ml-4">
                   <ul>
                     @foreach($data['professionalexperience_responsibilities'] as $responsibility)
@@ -95,7 +96,7 @@
               @endif
 
               @if($data['professionalexperience_projects'])
-              <div class="column100 mt-3">
+              <div class="row_ mt-3">
                 <div class="ml-4">
                   <ul>
                     @foreach($data['professionalexperience_projects'] as $project)
@@ -122,13 +123,13 @@
             <h3 class="theme-color text-center my-4" style="color: {{ $data['properties']->color1 }}">EDUCATION</h3>
             @foreach($data['education'] as $education)
           <div class="row_">
-            <div class="column100">
+            <div class="row_">
               <b>{{ $education->school }} - </b>{{ $education->address }}, {{ $education->country }}
               <br>
               <small>{{ $education->date_started }} - {!! $education->is_current==0 ? $education->date_ended : "date" !!}</small>
             </div>
             @if($data['education_projects'])
-            <div class="column100 mt-3">
+            <div class="row_ mt-3">
               <div class="ml-4"> 
                 <ul>
                   @foreach($data['education_projects'] as $project)
@@ -150,8 +151,8 @@
         @if($data['hobbies'])
         <div class="row_ my-4">
           <hr style="border: 1px solid {{ $data['properties']->color1 }};">
-            <div class="column100 my-4">
-              <h5 class="theme-color text-center my-4" style="color: {{ $data['properties']->color1 }}">HOBBIES</h5>
+            <div class="row_">
+              <h3 class="theme-color text-center my-4" style="color: {{ $data['properties']->color1 }}">HOBBIES</h3>
               <ul>
                 @foreach($data['hobbies'] as $hobby)
                   <li> 
